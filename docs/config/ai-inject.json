@@ -1,0 +1,104 @@
+{
+  "grok": {
+    "url": "https://grok.com/",
+    "host": "grok.com",
+    "name": "Grok",
+    "TEXTAREA": [
+      "div[contenteditable=\"true\"]",
+      "[contenteditable=\"true\"]"
+    ],
+    "TEXTAREA_FILL_TYPE": "innerHTML.p",
+    "SUBMIT_BUTTON": [
+      "button[aria-label='Submit']",
+      "body form button[type='submit']"
+    ],
+    "dropdownOrder": 7
+  },
+  "deepseek": {
+    "showOnDropdown": false,
+    "dropdownOrder": 6,
+    "host": "chat.deepseek.com",
+    "url": "https://chat.deepseek.com/",
+    "name": "Deepseek",
+    "TEXTAREA": [
+      "textarea[name='search']",
+      "textarea:first"
+    ],
+    "TEXTAREA_FILL_TYPE": "innerHTML.div",
+    "SUBMIT_BUTTON": [
+      "div.ds-icon-button",
+      "div.ds-icon"
+    ]
+  },
+  "gemini": {
+    "dropdownOrder": 4,
+    "name": "Gemini",
+    "url": "https://gemini.google.com/app",
+    "host": "gemini.google.com",
+    "TEXTAREA": [
+      "div[contenteditable=\"true\"]",
+      "[contenteditable=\"true\"]",
+      ".textarea"
+    ],
+    "TEXTAREA_FILL_TYPE": "innerHTML.p",
+    "SUBMIT_BUTTON": [
+      "[data-test-id=\"send-button-container\"] button",
+      "button.mat-mdc-icon-button",
+      "main button.send-button[aria-label='Send message']",
+      "button.send-button",
+      "main button[aria-label='Send']"
+    ]
+  },
+  "chatgpt": {
+    "dropdownOrder": 3,
+    "url": "https://chatgpt.com/",
+    "host": "chatgpt.com",
+    "name": "ChatGPT",
+    "TEXTAREA": [
+      "main form .ProseMirror",
+      "main form textarea:last-child",
+      "textarea:first"
+    ],
+    "TEXTAREA_FILL_TYPE": "innerHTML.p",
+    "SUBMIT_BUTTON": [
+      "main form button[aria-label='Send prompt']",
+      "button[aria-label=\"Send prompt\"]",
+      "button[data-testid=\"send-button\"]"
+    ]
+  },
+  "claude": {
+    "dropdownOrder": 2,
+    "url": "https://claude.ai/new",
+    "host": "claude.ai",
+    "name": "Claude",
+    "TEXTAREA": [
+      ".ProseMirror",
+      "fieldset div[contenteditable='true']",
+      "textarea:first"
+    ],
+    "TEXTAREA_FILL_TYPE": "innerHTML.p",
+    "SUBMIT_BUTTON": [
+      "button[aria-label='Send message']",
+      "fieldset button[aria-label='Send message']",
+      "fieldset button[aria-label='Send Message']"
+    ]
+  },
+  "mistral": {
+    "dropdownOrder": 1,
+    "url": "https://chat.mistral.ai/chat",
+    "host": "chat.mistral.ai",
+    "name": "Mistral",
+    "TEXTAREA": [
+      "div[contenteditable='true']",
+      "form div.ProseMirror",
+      "form textarea[name='message.text']",
+      "textarea:first"
+    ],
+    "TEXTAREA_FILL_TYPE": "innerHTML.p",
+    "SUBMIT_BUTTON": [
+      "form button[aria-label='Send']",
+      "button[aria-label='Send']",
+      "form button[type='submit']"
+    ]
+  }
+}

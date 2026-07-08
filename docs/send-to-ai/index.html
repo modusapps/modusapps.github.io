@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send to AI - Free AI Chat Integration</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .logo-section {
+      background: white;
+      padding: 30px 40px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 128px;
+      height: 128px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 40px;
+      text-align: center;
+    }
+
+    .install-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .install-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      color: #667eea;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1em;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .install-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .tagline {
+      font-size: 1.3em;
+      font-weight: 300;
+      opacity: 0.95;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .main-content {
+      padding: 60px 40px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    section h2 {
+      font-size: 1.3em;
+      margin-bottom: 15px;
+      color: #000;
+      border-bottom: none;
+      padding-bottom: 0;
+      display: inline-block;
+      font-weight: 600;
+    }
+
+    #policy h2 {
+      font-size: 1.2em;
+      color: #000;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .feature-card {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+
+    .feature-card h3 {
+      color: #667eea;
+      margin-bottom: 12px;
+      font-size: 1.2em;
+    }
+
+    .feature-card p {
+      color: #666;
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+
+    .gallery {
+      margin-top: 40px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .gallery-item p {
+      margin-top: 12px;
+      color: #dc143c;
+      font-weight: 700;
+      font-size: 1.1em;
+    }
+
+    .what-you-can {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+
+    .what-you-can h3 {
+      color: #000;
+      margin-bottom: 15px;
+      font-size: 1.1em;
+    }
+
+    .what-you-can ul {
+      list-style: none;
+      margin-left: 0;
+    }
+
+    .what-you-can li {
+      padding: 8px 0;
+      padding-left: 25px;
+      position: relative;
+      color: #444;
+      font-size: 0.95em;
+    }
+
+    .what-you-can li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #000;
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    .capabilities {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 15px;
+    }
+
+    .capabilities>div h3 {
+      color: #000;
+      margin-bottom: 12px;
+      font-size: 1.05em;
+      font-weight: 600;
+    }
+
+    .capabilities ul {
+      list-style: none;
+    }
+
+    .capabilities li {
+      padding: 6px 0;
+      padding-left: 22px;
+      position: relative;
+      color: #555;
+      font-size: 0.95em;
+    }
+
+    .capabilities li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 50px 40px;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .cta-section h2 {
+      color: white;
+      border-bottom-color: white;
+      margin-bottom: 20px;
+    }
+
+    .cta-section p {
+      font-size: 1.1em;
+      margin-bottom: 30px;
+      opacity: 0.95;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 15px 40px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.05em;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    footer {
+      background: #f8f9fa;
+      padding: 30px 40px;
+      text-align: center;
+      color: #999;
+      border-top: 1px solid #eee;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8em;
+      }
+
+      .tagline {
+        font-size: 1.1em;
+      }
+
+      header {
+        padding: 40px 20px;
+      }
+
+      .main-content {
+        padding: 40px 20px;
+      }
+
+      section h2 {
+        font-size: 1.5em;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .capabilities {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo-section">
+      <img src="images/128.png" alt="Send to AI Logo" class="logo">
+    </div>
+
+    <header>
+      <h1>Send to AI</h1>
+      <p class="tagline">Send YouTube videos, webpages, or text selections to free AI chats for conversation<br />
+        Free. No API keys, no hassle</p>
+      <div class="install-buttons">
+        <a href="https://chromewebstore.google.com/detail/send-to-ai/hahllcpdbbgpjehdpmojihpbignaimpn" target="_blank"
+          rel="noopener noreferrer" class="install-btn">
+          Install for Chrome
+        </a>
+        <a href="#" onClick="alert('available soon');return false;" target="_blank" rel="noopener noreferrer"
+          class="install-btn">
+          Install for Edge
+        </a>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <section>
+        <h2>What You Can Select</h2>
+        <div class="what-you-can">
+          <ul>
+            <li><strong>YouTube Videos</strong> — We'll extract the transcript and send it to your AI</li>
+            <li><strong>Webpages</strong> — We'll grab the content and prepare it for analysis</li>
+            <li><strong>Text Selections</strong> — Right-click any text and select it to send</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>What You Can Do</h2>
+        <div class="capabilities">
+          <div>
+            <h3>Content Preparation</h3>
+            <ul>
+              <li>Save custom prompts by name</li>
+              <li>Select a prompt from your list before sending</li>
+              <li>Edit the content before sending</li>
+              <li>Copy to clipboard anytime</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Choose Your AI Service</h3>
+            <ul>
+              <li>Pick ChatGPT, Claude, Gemini, DeepSeek, or Grok</li>
+              <li>Select a different service every time</li>
+              <li>No need to choose in advance</li>
+            </ul>
+          </div>
+        </div>
+        <p style="margin-top: 20px; color: #666; text-align: center;">
+          <em>No API keys required. We inject scripts directly into the page. Totally free!</em>
+        </p>
+      </section>
+
+      <section>
+        <h2>How It Works</h2>
+        <div class="gallery">
+          <div class="gallery-grid">
+            <div class="gallery-item">
+              <p>Extract YouTube Transcripts</p>
+              <img src="images/01 yt.png" alt="YouTube Integration">
+            </div>
+            <div class="gallery-item">
+              <p>Grab Webpage Content</p>
+              <img src="images/02 page.png" alt="Webpage Content">
+            </div>
+            <div class="gallery-item">
+              <p>Right-Click & Select Text</p>
+              <img src="images/03 right.png" alt="Text Selection">
+            </div>
+            <div class="gallery-item">
+              <p>Send to Your Favorite AI</p>
+              <img src="images/04 chat.png" alt="Send to AI">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section">
+        <h2>Ready to Streamline Your Workflow?</h2>
+        <p>Install Send to AI now and start sending content to your favorite AI services instantly.</p>
+        <div class="install-buttons">
+          <a href="https://chromewebstore.google.com/detail/send-to-ai/hahllcpdbbgpjehdpmojihpbignaimpn" target="_blank"
+            rel="noopener noreferrer" class="install-btn" style="background: white; color: #667eea;">
+            Install for Chrome
+          </a>
+          <a href="#" onClick="alert('available soon');return false;" target="_blank" rel="noopener noreferrer"
+            class="install-btn" style="background: white; color: #667eea;">
+            Install for Edge
+          </a>
+        </div>
+      </section>
+
+      <a name="policy"></a>
+      <section id="policy" class="policy">
+        <h1>Privacy Policy</h1>
+        <div class="date"><strong>Effective Date:</strong> June 17, 2026</div>
+
+        <h2>1. Overview</h2>
+        <p>
+          This Chrome extension enables users to send selected content (such as YouTube transcripts,
+          web page text, or highlighted text) to AI chat services for processing.
+        </p>
+        <p>
+          We are committed to protecting user privacy and minimizing data collection.
+        </p>
+
+        <h2>2. Information We Access</h2>
+        <p>The extension may access the following data only when the user initiates an action:</p>
+        <ul>
+          <li>Selected text on web pages</li>
+          <li>Content of the active tab</li>
+          <li>YouTube video transcripts (when available)</li>
+          <li>Page URL and basic metadata required for processing</li>
+        </ul>
+
+        <h2>3. How Data Is Used</h2>
+        <p>
+          Data is used only to send user-selected content to the chosen AI service for processing,
+          such as summarization, rewriting, or explanation.
+        </p>
+        <p>No tracking or profiling is performed.</p>
+
+        <h2>4. Data Storage</h2>
+        <ul>
+          <li>No user content is permanently stored</li>
+          <li>Local browser storage may be used for preferences (e.g. AI provider, prefixes)</li>
+          <li>No browsing history is collected</li>
+        </ul>
+
+        <h2>5. Data Sharing</h2>
+        <p>
+          We do not sell or share user data. Content is only sent to AI services chosen by the user
+          at the time of use.
+        </p>
+
+        <h2>6. Permissions Used</h2>
+        <ul>
+          <li><strong>Active Tab</strong> – read page content when requested</li>
+          <li><strong>Scripting</strong> – extract or inject content into AI pages</li>
+          <li><strong>Context Menus</strong> – enable right-click actions</li>
+          <li><strong>Storage</strong> – save user preferences locally</li>
+          <li><strong>Tabs</strong> – open AI chat pages</li>
+        </ul>
+
+        <h2>7. Third-Party Services</h2>
+        <p>When using AI providers, data may be sent to:</p>
+        <ul>
+          <li>OpenAI (ChatGPT)</li>
+          <li>Anthropic (Claude)</li>
+          <li>Google (Gemini)</li>
+          <li>DeepSeek</li>
+          <li>xAI (Grok)</li>
+        </ul>
+
+        <p>
+          These services have their own privacy policies and are responsible for how they handle data.
+        </p>
+
+        <h2>8. Security</h2>
+        <p>
+          Data is transmitted securely over HTTPS. The extension does not run background tracking or
+          hidden data collection.
+        </p>
+
+        <h2>9. User Control</h2>
+        <p>
+          Users can disable or remove the extension at any time and control what content is shared.
+        </p>
+
+        <h2>10. Changes</h2>
+        <p>
+          This policy may be updated periodically. The effective date will always reflect the latest version.
+        </p>
+
+        <h2>11. Contact</h2>
+        <p>
+          Email: <strong>softwareengsolutions@gmail.com</strong>
+        </p>
+        <p>
+          <a href="https://www.facebook.com/sendToAi/" rel="nofollow">Facebook page</a>
+        </p>
+      </section>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 Send to AI. All rights reserved. | Made with ❤️ for content creators and researchers</p>
+    </footer>
+  </div>
+</body>
+
+</html>

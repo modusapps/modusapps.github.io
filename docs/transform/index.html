@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data transformer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/favicon96.png" rel="apple-touch-icon">
+    <!-- End Favicons -->
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80vh;
+            resize: none;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container-fluid h-100">
+    <h1>Data transformer - beta</h1>
+    <div class="row h-100">
+        <!-- Left side: Input -->
+        <div class="col-md-6 d-flex flex-column p-3">
+            <h5 class="mb-3">Input</h5>
+            <select id="what" class="form-select mb-3">
+                <option value="">Select transformation</option>
+                <option value="shuffleArray">Shuffle Array elements</option>
+                <option value="formatJson">formatJson</option>
+            </select>
+            <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+            <button id="transformBtn" class="btn btn-primary mt-3 align-self-end">Transform</button>
+        </div>
+
+        <!-- Right side: Output -->
+        <div class="col-md-6 p-3">
+            <h5 class="mb-3">Output</h5>
+            <textarea id="outputText" readonly placeholder="Result will appear here..."></textarea>
+        </div>
+    </div>
+</div>
+
+<script>
+  document.getElementById('transformBtn').addEventListener('click', function () {
+    let text = document.getElementById('inputText').value;
+    let what = document.getElementById('what').value;
+
+    let res = 'choose an option';
+    try {
+      if (what === 'shuffleArray') {
+        let textJson = JSON.parse(text);
+        if (!Array.isArray(textJson)) {
+          throw new Error('not an array');
+        }
+        // Fisher-Yates shuffle
+        for (let i = textJson.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [textJson[i], textJson[j]] = [textJson[j], textJson[i]];
+        }
+
+        res = JSON.stringify(textJson, null, 2);
+      } else if (what === 'formatJson') {
+        res = JSON.stringify(JSON.parse(text), null, 2);
+      }
+    } catch (e) {
+      res = e.message;
+    }
+
+    document.getElementById('outputText').value = res;
+
+  });
+</script>
+
+</body>
+</html>

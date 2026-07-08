@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Link Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/favicon96.png" rel="apple-touch-icon">
+  <style>
+    body {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container-custom {
+      max-width: 500px;
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+    }
+
+    h1 {
+      color: #059669;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    input {
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #10b981;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .link-preview {
+      display: none;
+      margin-top: 25px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+      border-radius: 8px;
+      border: 2px solid #10b981;
+    }
+
+    .link-preview.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .preview-label {
+      font-size: 12px;
+      color: #059669;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .preview-link {
+      word-break: break-all;
+      color: #059669;
+      font-size: 14px;
+      margin-bottom: 12px;
+      font-family: monospace;
+      background: white;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #d1fae5;
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn-whatsapp:active {
+      transform: translateY(0);
+    }
+
+    .checkmark {
+      display: inline-block;
+      margin-right: 8px;
+      color: #10b981;
+    }
+
+    .ready-text {
+      color: #059669;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    .error-message {
+      display: none;
+      color: #dc2626;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-custom">
+    <h1>WhatsApp Link Generator</h1>
+    <p class="subtitle">Paste a phone number to generate a shareable WhatsApp link</p>
+
+    <div class="form-group">
+      <input
+        type="text"
+        id="phoneInput"
+        class="form-control"
+        placeholder="Enter phone number (e.g., +1234567890 or 1234567890)"
+        autocomplete="off"
+      >
+      <div class="error-message" id="errorMessage"></div>
+    </div>
+
+    <div class="link-preview" id="preview">
+      <div class="preview-label">✓ Ready to open</div>
+      <div class="preview-link" id="previewLink"></div>
+      <a href="#" id="whatsappLink" class="btn-whatsapp" target="_blank">Open WhatsApp</a>
+    </div>
+  </div>
+
+  <script>
+    const phoneInput = document.getElementById('phoneInput');
+    const preview = document.getElementById('preview');
+    const previewLink = document.getElementById('previewLink');
+    const whatsappLink = document.getElementById('whatsappLink');
+    const errorMessage = document.getElementById('errorMessage');
+
+    /**
+     * Sanitize phone number by removing common separators
+     * @param {string} phone - Raw phone input
+     * @returns {string} Sanitized phone number
+     */
+    const sanitizePhone = (phone) => {
+      return phone.replace(/[\s\-\(\)]/g, '');
+    };
+
+    /**
+     * Validate phone number format
+     * @param {string} phone - Sanitized phone number
+     * @returns {boolean} Is valid
+     */
+    const isValidPhone = (phone) => {
+      // Allow numbers with or without + prefix, at least 7 digits
+      return /^\+?\d{7,}$/.test(phone);
+    };
+
+    /**
+     * Update the link preview and WhatsApp button
+     */
+    const updatePreview = () => {
+      const rawPhone = phoneInput.value.trim();
+
+      if (!rawPhone) {
+        preview.classList.remove('show');
+        errorMessage.classList.remove('show');
+        return;
+      }
+
+      const sanitized = sanitizePhone(rawPhone);
+
+      if (!isValidPhone(sanitized)) {
+        errorMessage.textContent = 'Please enter a valid phone number (at least 7 digits)';
+        errorMessage.classList.add('show');
+        preview.classList.remove('show');
+        return;
+      }
+
+      errorMessage.classList.remove('show');
+
+      // Ensure + prefix for WhatsApp link
+      const phoneForLink = sanitized.startsWith('+') ? sanitized : `+${sanitized}`;
+      const waLink = `https://wa.me/${phoneForLink.replace(/^\+/, '')}`;
+
+      previewLink.textContent = waLink;
+      whatsappLink.href = waLink;
+      preview.classList.add('show');
+    };
+
+    phoneInput.addEventListener('input', updatePreview);
+  </script>
+</body>
+
+</html>
